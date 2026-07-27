@@ -1,0 +1,11 @@
+site_name: PulseOps Documentation
+site_description: Docs-as-code portfolio sample
+strict: true
+nav:
+  - Home: index.md
+  - Writing standard: writing-standard.md
+theme:
+  name: mkdocs
+markdown_extensions:
+  - admonition
+  - tables

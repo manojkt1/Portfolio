@@ -1,0 +1,110 @@
+openapi: 3.1.0
+info:
+  title: PulseOps Prediction API
+  version: 1.0.0
+  description: |
+    Fictional API for submitting equipment telemetry and receiving a
+    failure-risk prediction. Predictions require human review where indicated.
+servers:
+  - url: https://api.pulseops.example
+security:
+  - bearerAuth: []
+paths:
+  /v1/predictions:
+    post:
+      summary: Create a failure-risk prediction
+      operationId: createPrediction
+      tags: [Predictions]
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PredictionRequest'
+            examples:
+              pump:
+                value:
+                  asset_id: pump-17
+                  observed_at: '2026-07-25T08:30:00Z'
+                  telemetry:
+                    vibration_mm_s: 8.4
+                    temperature_c: 92.1
+                    rotational_speed_rpm: 2975
+      responses:
+        '201':
+          description: Prediction created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Prediction'
+        '422':
+          description: Telemetry validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          headers:
+            Retry-After:
+              schema: { type: integer }
+              description: Seconds to wait before retrying
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API key
+  schemas:
+    PredictionRequest:
+      type: object
+      additionalProperties: false
+      required: [asset_id, observed_at, telemetry]
+      properties:
+        asset_id: { type: string, minLength: 1 }
+        observed_at: { type: string, format: date-time }
+        telemetry: { $ref: '#/components/schemas/Telemetry' }
+    Telemetry:
+      type: object
+      additionalProperties: false
+      required: [vibration_mm_s, temperature_c, rotational_speed_rpm]
+      properties:
+        vibration_mm_s: { type: number, minimum: 0, maximum: 50 }
+        temperature_c: { type: number, minimum: -40, maximum: 250 }
+        rotational_speed_rpm: { type: integer, minimum: 0, maximum: 30000 }
+    Prediction:
+      type: object
+      required: [prediction_id, asset_id, risk_level, failure_probability, confidence, prediction_window_hours, signals, recommended_action, requires_human_review]
+      properties:
+        prediction_id: { type: string }
+        asset_id: { type: string }
+        risk_level: { type: string, enum: [low, medium, high] }
+        failure_probability: { type: number, minimum: 0, maximum: 1 }
+        confidence: { type: number, minimum: 0, maximum: 1 }
+        prediction_window_hours: { type: integer, enum: [24, 48, 72] }
+        signals: { type: array, items: { type: string } }
+        recommended_action: { type: string }
+        requires_human_review: { type: boolean }
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message, request_id]
+          properties:
+            code: { type: string }
+            message: { type: string }
+            request_id: { type: string }
+            field: { type: string }
