@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PulseOps API Reference Console</title>
+  <link rel="stylesheet" href="../../styles.css">
+  <style>
+    body { margin: 0; padding: 0; background: #fff !important; color: #1b2541 !important; }
+    .site-header { background: var(--ink) !important; color: #fff !important; width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 12px 28px !important; }
+    .site-header .brand { color: #fff !important; }
+    .site-header nav a { color: rgba(255,255,255,0.7) !important; }
+    .site-header nav a:hover { color: #fff !important; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../../index.html"><span class="brand-mark">MKT</span><span>Portfolio</span></a>
+    <nav><a href="index.html">PulseOps Hub</a><a href="openapi.html">View YAML Source</a><a href="../../index.html#work">All work</a></nav>
+  </header>
+  <div id="redoc-container"></div>
+  <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
+  <script>
+    Redoc.init('openapi.yaml', {
+      theme: {
+        colors: {
+          primary: { main: '#4f46e5' }
+        }
+      }
+    }, document.getElementById('redoc-container'));
+  </script>
+</body>
+</html>
