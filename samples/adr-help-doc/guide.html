@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Translation Playbook - ADR Guide</title>
+  <link rel="stylesheet" href="../../styles.css">
+  <style>
+    .doc-content { max-width: 800px; margin: 40px auto; padding: 0 24px; }
+    .doc-content h1 { font-size: 2.2rem; border-bottom: 2px solid var(--accent); padding-bottom: 12px; margin-bottom: 28px; }
+    .doc-content h2 { font-size: 1.6rem; margin-top: 36px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+    .doc-content code { font-family: monospace; background: var(--line); color: var(--ink); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; }
+    .doc-content table { width: 100%; border-collapse: collapse; margin: 24px 0; }
+    .doc-content th, .doc-content td { padding: 12px; border: 1px solid var(--line); text-align: left; }
+    .doc-content th { background: var(--paper); font-weight: 700; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../../index.html"><span class="brand-mark">MKT</span><span>Portfolio</span></a>
+    <nav><a href="index.html">ADR Hub</a><a href="../../index.html#work">All work</a></nav>
+  </header>
+  <main class="doc-content">
+    <p class="eyebrow">Docs Operations Playbook</p>
+    <h1>Playbook: Translating ADRs to External Help Documentation</h1>
+    <p>Internal Architecture Decision Records (ADRs) capture critical engineering decisions. However, they cannot be shared with external users or partners directly due to <strong>Intellectual Property (IP) boundaries</strong> and technical complexity.</p>
+    <p>This playbook outlines how a Senior Technical Writer translates internal ADRs into user-facing content (like release notes, migration guides, and developer portals) while maintaining strict IP hygiene.</p>
+
+    <h2>The Translation Process</h2>
+    <ol>
+      <li><strong>Identify User Impact:</strong> Analyze whether this change affects client-side behavior, integration code, validation logic, performance, or service-level agreements.</li>
+      <li><strong>Strip Proprietary Data & IP:</strong> Ensure the external document contains zero instances of internal server names, hostnames, private IPs, library versions, or specific security endpoints.</li>
+      <li><strong>Generalize Technology Names:</strong> Substitute specific company middleware names with industry standard references (e.g. replacing a custom database proxy name with "high-availability connection pool").</li>
+      <li><strong>Create Fictionalized Examples:</strong> When displaying work publicly, never copy-paste production documents. Re-author a simplified version using standard, open-source templates.</li>
+    </ol>
+
+    <h2>Example Translation Mapping</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Internal ADR Element (Proprietary / Complex)</th>
+          <th>External Help Translation (Actionable / Safe)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Decision:</strong> Migrate billing services to AWS Lambda to reduce database lockups on <code>tb_subscriptions</code>.</td>
+          <td><strong>Update:</strong> We are moving our subscription processing to a serverless architecture. This improves reliability during peak usage periods and eliminates billing transaction timeouts.</td>
+        </tr>
+        <tr>
+          <td><strong>Technical details:</strong> JWT signatures will be verified using the local public key cached via Redis at <code>redis-cache.prod.internal:6379</code>.</td>
+          <td><strong>Developer Impact:</strong> API validation is now stateless and signature-verified. Developers do not need to make any changes; standard response times will drop by ~25ms.</td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+  <footer>
+    <span>Manoj Kumar T</span>
+    <a href="index.html">Back to ADR Hub</a>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Getting Started - PulseOps API Guide</title>
+  <link rel="stylesheet" href="../../styles.css">
+  <style>
+    .doc-content { max-width: 800px; margin: 40px auto; padding: 0 24px; }
+    .doc-content h1 { font-size: 2.5rem; border-bottom: 2px solid var(--accent); padding-bottom: 12px; margin-bottom: 28px; }
+    .doc-content h2 { font-size: 1.8rem; margin-top: 36px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+    .doc-content pre { background: var(--ink); color: #fff; padding: 20px; border-radius: 6px; overflow-x: auto; font-family: monospace; font-size: 0.9rem; }
+    .doc-content code { font-family: monospace; background: var(--line); color: var(--ink); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; }
+    .doc-content pre code { background: none; color: inherit; padding: 0; }
+    .doc-content blockquote { border-left: 4px solid var(--gold); padding-left: 16px; margin: 20px 0; color: var(--ink-soft); font-style: italic; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../../index.html"><span class="brand-mark">MKT</span><span>Portfolio</span></a>
+    <nav><a href="index.html">PulseOps Hub</a><a href="../../index.html#work">All work</a></nav>
+  </header>
+  <main class="doc-content">
+    <p class="eyebrow">Developer Guide</p>
+    <h1>Get Started with the PulseOps Prediction API</h1>
+    <blockquote>PulseOps is a fictional product created as a technical-writing portfolio sample.</blockquote>
+    <p>Use the Prediction API to submit recent equipment telemetry and receive a failure-risk assessment for the next 72 hours.</p>
+
+    <h2>Before you begin</h2>
+    <p>You need:</p>
+    <ul>
+      <li>an API key with the <code>predictions:write</code> scope;</li>
+      <li>a stable equipment identifier;</li>
+      <li>at least 30 minutes of timestamped telemetry;</li>
+      <li>vibration, temperature, and rotational-speed measurements in the documented units.</li>
+    </ul>
+
+    <h2>1. Send an inference request</h2>
+    <pre><code>curl --request POST \
+  --url https://api.pulseops.example/v1/predictions \
+  --header "Authorization: Bearer $PULSEOPS_API_KEY" \
+  --header "Content-Type: application/json" \
+  --header "Idempotency-Key: 91f2c230-7bd5-4bd1-b2bc-e33847fd30a1" \
+  --data '{
+    "asset_id": "pump-17",
+    "observed_at": "2026-07-25T08:30:00Z",
+    "telemetry": {
+      "vibration_mm_s": 8.4,
+      "temperature_c": 92.1,
+      "rotational_speed_rpm": 2975
+    }
+  }'</code></pre>
+
+    <h2>2. Interpret the response</h2>
+    <pre><code>{
+  "prediction_id": "pred_01J3Q6X4G8M2",
+  "asset_id": "pump-17",
+  "risk_level": "high",
+  "failure_probability": 0.82,
+  "confidence": 0.76,
+  "prediction_window_hours": 72,
+  "signals": ["vibration_above_baseline", "temperature_trend_increasing"],
+  "recommended_action": "Inspect bearings within 8 hours.",
+  "requires_human_review": true
+}</code></pre>
+    <ul>
+      <li><code>failure_probability</code> estimates failure risk within the prediction window. It is not a guarantee.</li>
+      <li><code>confidence</code> describes how closely the request resembles data used to validate the model.</li>
+      <li><code>requires_human_review</code> is <code>true</code> for high-risk responses and low-confidence predictions.</li>
+    </ul>
+
+    <h2>3. Implement a safe fallback</h2>
+    <p>Do not automatically stop equipment using the prediction alone. Route high-risk results to a qualified maintenance engineer and combine the result with operating context, inspections, and existing safety procedures.</p>
+  </main>
+  <footer>
+    <span>Manoj Kumar T</span>
+    <a href="index.html">Back to PulseOps</a>
+  </footer>
+</body>
+</html>

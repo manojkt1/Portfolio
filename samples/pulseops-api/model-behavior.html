@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Model Behavior & Limitations - PulseOps API Guide</title>
+  <link rel="stylesheet" href="../../styles.css">
+  <style>
+    .doc-content { max-width: 800px; margin: 40px auto; padding: 0 24px; }
+    .doc-content h1 { font-size: 2.5rem; border-bottom: 2px solid var(--accent); padding-bottom: 12px; margin-bottom: 28px; }
+    .doc-content h2 { font-size: 1.8rem; margin-top: 36px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+    .doc-content code { font-family: monospace; background: var(--line); color: var(--ink); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; }
+    .doc-content table { width: 100%; border-collapse: collapse; margin: 24px 0; }
+    .doc-content th, .doc-content td { padding: 12px; border: 1px solid var(--line); text-align: left; }
+    .doc-content th { background: var(--paper); font-weight: 700; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../../index.html"><span class="brand-mark">MKT</span><span>Portfolio</span></a>
+    <nav><a href="index.html">PulseOps Hub</a><a href="../../index.html#work">All work</a></nav>
+  </header>
+  <main class="doc-content">
+    <p class="eyebrow">API Reference</p>
+    <h1>Model Behavior and Limitations</h1>
+    
+    <h2>Intended use</h2>
+    <p>The PulseOps model prioritizes assets for maintenance review. It supports, but does not replace, decisions by qualified engineers.</p>
+
+    <h2>Inputs</h2>
+    <p>The model evaluates vibration, temperature, rotational speed, asset type, and recent trends. Missing, stale, or incorrectly scaled telemetry reduces confidence.</p>
+
+    <h2>Confidence guidance</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Confidence</th>
+          <th>Meaning</th>
+          <th>Recommended handling</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0.80 - 1.00</td>
+          <td>Request is similar to validated operating conditions</td>
+          <td>Review normal risk controls</td>
+        </tr>
+        <tr>
+          <td>0.60 - 0.79</td>
+          <td>Some conditions differ from validated data</td>
+          <td>Require engineer review</td>
+        </tr>
+        <tr>
+          <td>Below 0.60</td>
+          <td>Prediction may be unreliable</td>
+          <td>Treat as insufficient evidence and inspect data quality</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Known limitations</h2>
+    <ul>
+      <li>The model has not been validated for equipment types absent from the supported-assets list.</li>
+      <li>Recent repairs or sensor replacement can create temporary drift.</li>
+      <li>A low-risk response does not prove that an asset is safe.</li>
+      <li>Predictions depend on sensor calibration and time synchronization.</li>
+      <li>The model should not trigger autonomous shutdowns or safety actions.</li>
+    </ul>
+
+    <h2>Monitoring and drift</h2>
+    <p>Track confidence distribution, prediction volume, engineer overrides, false alarms, and missed failures. Revalidate the model when the operating environment, sensor configuration, or maintenance policy changes.</p>
+  </main>
+  <footer>
+    <span>Manoj Kumar T</span>
+    <a href="index.html">Back to PulseOps</a>
+  </footer>
+</body>
+</html>

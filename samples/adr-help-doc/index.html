@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ADR Help Documentation Guide</title>
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../../index.html"><span class="brand-mark">MKT</span><span>Portfolio</span></a>
+    <nav><a href="../../index.html#work">All work</a></nav>
+  </header>
+  <main>
+    <section class="section">
+      <p class="eyebrow">Docs Operations Sample</p>
+      <h1 style="font-size:clamp(2.5rem,6vw,5rem)">ADR Help Documentation Guide</h1>
+      <p class="lede">A sample demonstrating how to translate internal engineering Architecture Decision Records (ADRs) into clear, non-proprietary external documentation. This method completely avoids IP (Intellectual Property) conflicts by generalizing architectures and removing customer or system identifiers.</p>
+      <div class="project-grid" style="margin-top:50px">
+        <article class="project-card">
+          <div class="project-tag">Markdown Source</div>
+          <h3>Fictional ADR Sample</h3>
+          <p>A reference Markdown ADR deciding to migrate a customer portal's API key mechanism from static strings to short-lived JWTs.</p>
+          <a class="text-link" href="adr-example.html">Read ADR sample →</a>
+        </article>
+        <article class="project-card">
+          <div class="project-tag">Docs Guide</div>
+          <h3>Translation Playbook</h3>
+          <p>A practical playbook detailing the process of extracting external impact from internal engineering decisions without leaking IP.</p>
+          <a class="text-link" href="guide.html">Read Guide →</a>
+        </article>
+        <article class="project-card">
+          <div class="project-tag">IP Protection</div>
+          <h3>Avoiding IP Conflicts</h3>
+          <p>Guidelines on keeping your portfolio compliant with NDAs by using anonymization, fictional schemas, and general architectures.</p>
+          <a class="text-link" href="#ip-protection">Read IP guidelines ↓</a>
+        </article>
+      </div>
+      <div class="section-heading" style="margin-top:70px" id="ip-protection">
+        <h2>Protecting Intellectual Property (IP)</h2>
+      </div>
+      <div class="capability-grid">
+        <article>
+          <h3>1. Anonymization</h3>
+          <p>Remove all company-specific names, customer IDs, domain names, server endpoints, and proprietary libraries. Substitute them with generic industry standards (e.g., replacing a custom billing middleware name with standard OAuth/OAuth2 flow references).</p>
+        </article>
+        <article>
+          <h3>2. Fictionalizing Data Schemas</h3>
+          <p>Instead of displaying real database schemas or production JSON outputs, construct simplified, realistic counterparts. For example, use a fictitious device management API (like PulseOps) instead of actual client integration schemas.</p>
+        </article>
+        <article>
+          <h3>3. Focusing on the Decision Framework</h3>
+          <p>Showcase *how* you write, structure, and govern documents, not the secrets of what was built. Employers value your processes (Docs-as-Code pipeline, ADR translations, Agile facilitation) over the exact details of private infrastructure.</p>
+        </article>
+        <article>
+          <h3>4. Using Public Standards</h3>
+          <p>Write references using standard templates (e.g., Michael Nygard's ADR format, OpenAPI 3.1, standard Markdown linting rules) to emphasize compliance with best-in-class industry workflows.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <span>Manoj Kumar T</span>
+    <a href="../../index.html">Back to portfolio</a>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Error Reference - PulseOps API Guide</title>
+  <link rel="stylesheet" href="../../styles.css">
+  <style>
+    .doc-content { max-width: 800px; margin: 40px auto; padding: 0 24px; }
+    .doc-content h1 { font-size: 2.5rem; border-bottom: 2px solid var(--accent); padding-bottom: 12px; margin-bottom: 28px; }
+    .doc-content h2 { font-size: 1.8rem; margin-top: 36px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+    .doc-content pre { background: var(--ink); color: #fff; padding: 20px; border-radius: 6px; overflow-x: auto; font-family: monospace; font-size: 0.9rem; }
+    .doc-content code { font-family: monospace; background: var(--line); color: var(--ink); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; }
+    .doc-content pre code { background: none; color: inherit; padding: 0; }
+    .doc-content table { width: 100%; border-collapse: collapse; margin: 24px 0; }
+    .doc-content th, .doc-content td { padding: 12px; border: 1px solid var(--line); text-align: left; }
+    .doc-content th { background: var(--paper); font-weight: 700; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../../index.html"><span class="brand-mark">MKT</span><span>Portfolio</span></a>
+    <nav><a href="index.html">PulseOps Hub</a><a href="../../index.html#work">All work</a></nav>
+  </header>
+  <main class="doc-content">
+    <p class="eyebrow">API Reference</p>
+    <h1>Error Reference</h1>
+    <p>Errors use a stable <code>code</code>, a readable <code>message</code>, a <code>request_id</code>, and optional field-level details.</p>
+
+    <pre><code>{
+  "error": {
+    "code": "TELEMETRY_OUT_OF_RANGE",
+    "message": "vibration_mm_s must be between 0 and 50.",
+    "request_id": "req_01J3Q7B7K4W9",
+    "field": "telemetry.vibration_mm_s"
+  }
+}</code></pre>
+
+    <h2>Error Code Matrix</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>HTTP Status</th>
+          <th>Code</th>
+          <th>Cause</th>
+          <th>Resolution</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>400</td>
+          <td><code>INVALID_REQUEST</code></td>
+          <td>JSON or a required field is invalid</td>
+          <td>Correct the field identified in the response</td>
+        </tr>
+        <tr>
+          <td>401</td>
+          <td><code>INVALID_API_KEY</code></td>
+          <td>Key is missing, expired, or revoked</td>
+          <td>Rotate the key and retry</td>
+        </tr>
+        <tr>
+          <td>403</td>
+          <td><code>INSUFFICIENT_SCOPE</code></td>
+          <td>Key lacks <code>predictions:write</code></td>
+          <td>Request the required scope</td>
+        </tr>
+        <tr>
+          <td>409</td>
+          <td><code>IDEMPOTENCY_CONFLICT</code></td>
+          <td>Key was reused with a different body</td>
+          <td>Generate a new idempotency key</td>
+        </tr>
+        <tr>
+          <td>422</td>
+          <td><code>TELEMETRY_OUT_OF_RANGE</code></td>
+          <td>A value falls outside supported limits</td>
+          <td>Verify sensor units and calibration</td>
+        </tr>
+        <tr>
+          <td>429</td>
+          <td><code>RATE_LIMITED</code></td>
+          <td>Request quota was exceeded</td>
+          <td>Wait for <code>Retry-After</code> and retry with backoff</td>
+        </tr>
+        <tr>
+          <td>503</td>
+          <td><code>MODEL_UNAVAILABLE</code></td>
+          <td>Model deployment is temporarily unavailable</td>
+          <td>Use the documented fallback and retry later</td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+  <footer>
+    <span>Manoj Kumar T</span>
+    <a href="index.html">Back to PulseOps</a>
+  </footer>
+</body>
+</html>

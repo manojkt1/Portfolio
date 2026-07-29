@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Fictional ADR - Guide</title>
+  <link rel="stylesheet" href="../../styles.css">
+  <style>
+    .doc-content { max-width: 800px; margin: 40px auto; padding: 0 24px; }
+    .doc-content h1 { font-size: 2.2rem; border-bottom: 2px solid var(--accent); padding-bottom: 12px; margin-bottom: 28px; }
+    .doc-content h2 { font-size: 1.6rem; margin-top: 36px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+    .doc-content code { font-family: monospace; background: var(--line); color: var(--ink); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../../index.html"><span class="brand-mark">MKT</span><span>Portfolio</span></a>
+    <nav><a href="index.html">ADR Hub</a><a href="../../index.html#work">All work</a></nav>
+  </header>
+  <main class="doc-content">
+    <p class="eyebrow">Fictional Architecture Decision Record</p>
+    <h1>ADR 004: Migrating Client Authentication to Short-Lived JSON Web Tokens (JWT)</h1>
+    
+    <h2>Status</h2>
+    <p><strong>Accepted</strong></p>
+
+    <h2>Context</h2>
+    <p>Our fictional customer portal application currently authenticates API clients using static, long-lived API tokens. These tokens are stored in the database and validated on every request. However, this presents security risks:</p>
+    <ol>
+      <li>If a database is compromised, all active client tokens are leaked.</li>
+      <li>Invalidation of compromised tokens requires active database writes and database lookups on every single API request, increasing latency.</li>
+    </ol>
+    <p>We need a more secure, decentralized, and stateless authentication mechanism that reduces database hits.</p>
+
+    <h2>Decision</h2>
+    <p>We will migrate our client authentication scheme from static strings to short-lived JSON Web Tokens (JWTs).</p>
+    <ol>
+      <li><strong>Token Generation:</strong> Clients will request a JWT by passing their credentials (Client ID and Client Secret) to the <code>/oauth/token</code> exchange endpoint.</li>
+      <li><strong>Lifetime:</strong> The generated JWT will have an expiration time (<code>exp</code>) of 60 minutes.</li>
+      <li><strong>Validation:</strong> Microservices will validate JWTs statelessly using the public key signature of our Identity Provider, removing the need for database lookups on standard API calls.</li>
+      <li><strong>Refresh:</strong> Clients will use a rotating refresh token to obtain a new JWT without storing primary credentials in memory.</li>
+    </ol>
+
+    <h2>Consequences</h2>
+    <ul>
+      <li><strong>Security:</strong> Compromised JWTs are only valid for a maximum of 60 minutes.</li>
+      <li><strong>Latency:</strong> Validation is CPU-bound rather than I/O-bound, saving database lookups on every request.</li>
+      <li><strong>Complexity:</strong> Clients must now handle token expiration and automatic refresh cycles.</li>
+    </ul>
+  </main>
+  <footer>
+    <span>Manoj Kumar T</span>
+    <a href="index.html">Back to ADR Hub</a>
+  </footer>
+</body>
+</html>
