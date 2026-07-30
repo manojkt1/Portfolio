@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MkDocs Configuration - Docs-as-Code Quality Pipeline</title>
+  <link rel="stylesheet" href="../../styles.css">
+  <style>
+    .doc-content { max-width: 800px; margin: 40px auto; padding: 0 24px; }
+    .doc-content h1 { font-size: 2.5rem; border-bottom: 2px solid var(--accent); padding-bottom: 12px; margin-bottom: 28px; }
+    .doc-content h2 { font-size: 1.8rem; margin-top: 36px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+    .doc-content pre { background: var(--ink); color: #fff; padding: 20px; border-radius: 6px; overflow-x: auto; font-family: monospace; font-size: 0.9rem; }
+    .doc-content code { font-family: monospace; background: var(--line); color: var(--ink); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; }
+    .doc-content pre code { background: none; color: inherit; padding: 0; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../../index.html"><span class="brand-mark">MKT</span><span>Portfolio</span></a>
+    <nav><a href="index.html">Pipeline overview</a><a href="../../index.html#work">All work</a></nav>
+  </header>
+  <main class="doc-content">
+    <p class="eyebrow">Docs engineering sample</p>
+    <h1>MkDocs Configuration</h1>
+    <p>A minimal, strict MkDocs setup — the build fails on unresolved navigation entries or broken cross-references rather than publishing a site with silent gaps.</p>
+
+    <h2>mkdocs.yml</h2>
+    <pre><code>site_name: PulseOps Documentation
+site_description: Docs-as-code portfolio sample
+strict: true
+nav:
+  - Home: index.md
+  - Writing standard: writing-standard.md
+theme:
+  name: mkdocs
+markdown_extensions:
+  - admonition
+  - tables</code></pre>
+
+    <h2>Source pages</h2>
+    <ul>
+      <li><code>docs/index.md</code> — describes the quality gates the pipeline enforces.</li>
+      <li><code>docs/writing-standard.md</code> — the house style rules technical and editorial reviewers check against.</li>
+    </ul>
+  </main>
+  <footer>
+    <span>Manoj Kumar T</span>
+    <a href="index.html">Back to pipeline overview</a>
+  </footer>
+</body>
+</html>

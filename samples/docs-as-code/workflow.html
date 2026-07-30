@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>CI Workflow - Docs-as-Code Quality Pipeline</title>
+  <link rel="stylesheet" href="../../styles.css">
+  <style>
+    .doc-content { max-width: 800px; margin: 40px auto; padding: 0 24px; }
+    .doc-content h1 { font-size: 2.5rem; border-bottom: 2px solid var(--accent); padding-bottom: 12px; margin-bottom: 28px; }
+    .doc-content h2 { font-size: 1.8rem; margin-top: 36px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+    .doc-content pre { background: var(--ink); color: #fff; padding: 20px; border-radius: 6px; overflow-x: auto; font-family: monospace; font-size: 0.9rem; }
+    .doc-content code { font-family: monospace; background: var(--line); color: var(--ink); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; }
+    .doc-content pre code { background: none; color: inherit; padding: 0; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../../index.html"><span class="brand-mark">MKT</span><span>Portfolio</span></a>
+    <nav><a href="index.html">Pipeline overview</a><a href="../../index.html#work">All work</a></nav>
+  </header>
+  <main class="doc-content">
+    <p class="eyebrow">Docs engineering sample</p>
+    <h1>GitHub Actions Workflow</h1>
+    <p>The pipeline triggers on every pull request that touches documentation source, and again on push to <code>main</code>, so broken links or a failing build are caught before they ship.</p>
+
+    <h2>docs-quality.yml</h2>
+    <pre><code>name: docs-quality
+on:
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'mkdocs.yml'
+      - 'requirements.txt'
+      - 'scripts/**'
+  push:
+    branches: [main]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Check internal links
+        run: python scripts/check_internal_links.py docs
+      - name: Build documentation
+        run: mkdocs build --strict</code></pre>
+
+    <h2>Why each step exists</h2>
+    <ul>
+      <li><strong>Scoped triggers:</strong> the job only runs when documentation actually changed, keeping CI signal relevant.</li>
+      <li><strong>Check internal links:</strong> <code>scripts/check_internal_links.py</code> walks every Markdown file under <code>docs/</code> and fails the build if a relative link points to a file that doesn't exist.</li>
+      <li><strong>Strict MkDocs build:</strong> <code>mkdocs build --strict</code> turns warnings (missing nav entries, unresolved cross-references) into build failures instead of silent gaps.</li>
+    </ul>
+  </main>
+  <footer>
+    <span>Manoj Kumar T</span>
+    <a href="index.html">Back to pipeline overview</a>
+  </footer>
+</body>
+</html>
