@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Implementation Notes - Docs-as-Code Quality Pipeline</title>
+  <link rel="stylesheet" href="../../styles.css">
+  <style>
+    .doc-content { max-width: 800px; margin: 40px auto; padding: 0 24px; }
+    .doc-content h1 { font-size: 2.5rem; border-bottom: 2px solid var(--accent); padding-bottom: 12px; margin-bottom: 28px; }
+    .doc-content h2 { font-size: 1.8rem; margin-top: 36px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+    .doc-content pre { background: var(--ink); color: #fff; padding: 20px; border-radius: 6px; overflow-x: auto; font-family: monospace; font-size: 0.9rem; }
+    .doc-content code { font-family: monospace; background: var(--line); color: var(--ink); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; }
+    .doc-content pre code { background: none; color: inherit; padding: 0; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../../index.html"><span class="brand-mark">MKT</span><span>Portfolio</span></a>
+    <nav><a href="index.html">Pipeline overview</a><a href="../../index.html#work">All work</a></nav>
+  </header>
+  <main class="doc-content">
+    <p class="eyebrow">Docs engineering sample</p>
+    <h1>Implementation Notes</h1>
+    <p>This sample demonstrates a documentation workflow with Markdown source in Git, pull-request review, internal-link validation, a strict MkDocs build, and publishing only after checks and review pass.</p>
+
+    <h2>Local commands</h2>
+    <pre><code>python -m pip install -r requirements.txt
+python scripts/check_internal_links.py docs
+mkdocs build --strict</code></pre>
+    <p>The same three commands run in CI on every pull request that touches <code>docs/</code>, <code>mkdocs.yml</code>, <code>requirements.txt</code>, or <code>scripts/</code> — see the <a href="workflow.html">workflow definition</a> and <a href="config.html">MkDocs configuration</a>.</p>
+
+    <h2>Review roles</h2>
+    <ul>
+      <li><strong>Author:</strong> writes and self-tests the change.</li>
+      <li><strong>Technical reviewer:</strong> verifies product behavior, commands, values, and examples.</li>
+      <li><strong>Editorial reviewer:</strong> checks clarity, structure, terminology, and accessibility.</li>
+      <li><strong>Release owner:</strong> confirms that documentation is ready with the product change.</li>
+    </ul>
+    <p>The workflow intentionally does not use an LLM as an accuracy authority. AI-assisted edits require the same technical and editorial checks as human-authored changes.</p>
+  </main>
+  <footer>
+    <span>Manoj Kumar T</span>
+    <a href="index.html">Back to pipeline overview</a>
+  </footer>
+</body>
+</html>
